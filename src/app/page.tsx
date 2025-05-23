@@ -1,12 +1,30 @@
+/*
+Usado no next.js para indicar esse componente será renderizado no cliente(navegador), e nao no servidor
+*/
 'use client';
 
+/*
+useState: Hook do React para criar e atualizar estados locais
+useSocket: um custom hook criado previamente responsavel por gerenciar a conexão com o WebSocket e enviar/receber mensagens
+*/
 import { useState } from 'react';
 import { useSocket } from '../hooks/useSocket';
 
+/*
+isConnected: booleano que indicar se o socket está conectado
+messages: array de mensagens recebidas
+sendMessage: funcao que envia uma mensagem para o servidor via WebSocket
+inputMessage: controla o que esta sendo digitado no campo de texto
+*/
 export default function Home() {
   const { isConnected, messages, sendMessage } = useSocket();
   const [inputMessage, setInputMessage] = useState('');
-
+  /*
+  FUNCAO DE ENVIO
+  -E chamada ao enviar o formulário
+  -Impede o comportamento padrão do navegador (e.         preventDefault)
+  -Se a mensagem não estiver vazia, envia via sendMessage() e limpa o campo de entrada
+  */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputMessage.trim()) {
@@ -16,6 +34,9 @@ export default function Home() {
   };
 
   return (
+    /* 
+    JSX em si (interface do chat)
+    */
     <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold mb-4 text-center">WebSocket Chat Demo</h1>
